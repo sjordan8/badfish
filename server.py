@@ -4,6 +4,7 @@ import ssl
 
 cert_file = "./localhost.pem"
 key_file = "./localhost-key.pem"
+port = 8080
 
 class RequestHandler(SimpleHTTPRequestHandler):
     def end_headers(self):
@@ -12,7 +13,7 @@ class RequestHandler(SimpleHTTPRequestHandler):
         self.send_header("Expires", "0")
         super().end_headers()
 
-httpd = HTTPServer(('', 8080), RequestHandler)
+httpd = HTTPServer(('', port), RequestHandler)
 
 httpd.socket = ssl.wrap_socket(
     httpd.socket,
@@ -21,4 +22,5 @@ httpd.socket = ssl.wrap_socket(
     certfile=cert_file
 )
 
+print(f"Now listening on port {port}")
 httpd.serve_forever()
